@@ -1,18 +1,11 @@
-OBJ := ./obj
-BIN := ./bin
-SRC := ./src
-
 dirs:
-	mkdir -p $(OBJ) $(BIN)
+	mkdir -p ./obj ./bin
 
-$(OBJ)/%.ko: $(SRC)/%.s dirs
+./obj/%.ko: ./obj/%.s dirs
 	kasm -o $@ $<
 
-src := $(wildcard $(SRC)/*.s)
-obj := $(foreach pat,$(src:.s=.ko),$(pat:$(SRC)%=$(OBJ)%))
+bin: $(OBJ)
+	kld $^ -o ./bin/$(NAME).ksm
 
-bin: $(obj)
-	kld $(obj) -o $(BIN)/$(NAME).ksm
-
-install: $(BIN)/$(NAME).ksm
-	cp $< '$(KOS_ARCHIVE)'
+install: ./bin/$(NAME).ksm
+	cp $< '$(KOS_ARCHIVE)/boot'
