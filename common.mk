@@ -1,10 +1,13 @@
+OBJFILES := $(foreach path,$(OBJ),./obj/$(path))
+
 dirs:
 	mkdir -p ./obj ./bin
 
-./obj/%.ko: ./obj/%.s dirs
+./obj/%.ko: ./src/%.s dirs
 	kasm -o $@ $<
 
-bin: $(OBJ)
+./bin/$(NAME).ksm: bin
+bin: $(OBJFILES)
 	kld $^ -o ./bin/$(NAME).ksm
 
 install: ./bin/$(NAME).ksm

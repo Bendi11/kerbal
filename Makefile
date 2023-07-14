@@ -1,3 +1,6 @@
+DIRS := $(dir $(wildcard ./*/.))
 
-$(dir $(wildcard ./*/.)):
+$(DIRS):
 	make -C $@ install
+
+.PHONY: $(DIRS)
