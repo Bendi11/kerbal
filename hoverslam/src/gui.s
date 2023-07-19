@@ -36,7 +36,7 @@ start_gui:
     call #, "<indirect>"
     pop
     
-    push 0
+    push 100000000
 .loop:
     dup
     wait
