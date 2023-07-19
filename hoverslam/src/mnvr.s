@@ -108,8 +108,6 @@ CLS
 gs_execute_slam:
    nop
    .while_high:
-    CLS
-
     push thrustpid
     gmet "update"
 
@@ -119,18 +117,14 @@ gs_execute_slam:
 
     push "$ship"
     gmb "verticalspeed"
+    
+
     push "$ship"
     gmb "groundspeed"
     sub
 
     call #, "<indirect>"
     
-    dup
-    push "THROT: "
-    swap
-    add
-    SPRINT
-
     sto "$throttle"
     
     push 0
@@ -140,11 +134,11 @@ gs_execute_slam:
     gmb "radar"
     dup
 
-    push 20
+    push HIGH_ALT_FLOOR
     cle
     bfa .keep_going_fast
     push thrustpid
-    push 1.5
+    push LANDING_DROP_V
     neg
     smb "setpoint"
 

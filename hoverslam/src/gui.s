@@ -47,9 +47,6 @@ start_gui:
 
 .func
 on_engage:
-    push true
-    sto "$sas"
-
     push "retrograde"
     sto "$sasmode"
      

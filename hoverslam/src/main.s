@@ -18,7 +18,7 @@ init:
     stog thrustpid
     
 
-    push LAND_V
+    push HIGH_ALT_DROP_V
     neg
     smb "setpoint"
     
