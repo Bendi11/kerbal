@@ -60,6 +60,9 @@ on_engage:
     push @
     call gs_wait_for_slam, #
     dup
+    push "TTB: "
+    swap
+    add
     SPRINT
     push 0
     cle

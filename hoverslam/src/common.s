@@ -32,7 +32,7 @@
 .define TPID_KD 0.0
 .define LAND_V 10.0
 
-.define EXTRA_BURN_TIME 1.5
+.define EXTRA_BURN_TIME 0.3
 
 .define FBW_THROTTLE "throttle"
 .define FBW_STEERING "steering"

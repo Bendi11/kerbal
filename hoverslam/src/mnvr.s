@@ -71,6 +71,9 @@ CLS
     call time_to_impact, #
     
     dup
+    push "TTI: "
+    swap
+    add
     SPRINT
 
     dup
@@ -79,13 +82,7 @@ CLS
     ; Get time to reduce v to 0 in seconds (r5)
     ; -v / (a - g) = t
     push "$ship"
-    gmb "verticalspeed"
-    neg
-    push "$ship"
-    gmb "groundspeed"
-    sub
-
-    neg
+    gmb "airspeed"
 
     push "$r2"
     push "$r1"
@@ -93,6 +90,12 @@ CLS
     div
     dup
     sto "$r5"
+
+    dup
+    push "TTS: "
+    swap
+    add
+    SPRINT
 
     sub
 
