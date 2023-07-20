@@ -5,7 +5,7 @@
 .include "./src/common.s"
 
 .define gui "$gui"
-.define engage "$enbtn"
+.define engage_btn "$enbtn"
 
 .section .text
 
@@ -26,9 +26,9 @@ start_gui:
     call #, "<indirect>"
     
     dup
-    stog engage
+    stog engage_btn
     
-    pdrl on_engage, true
+    pdrl engage, true
     smb "onclick"
 
     gmet "show"

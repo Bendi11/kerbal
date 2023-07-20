@@ -27,6 +27,9 @@
 
 .ifndef MAIN_S
 
+; Execute the burn from start to finish
+.extern .func engage
+
 ; Initialize shared state
 .extern .func init
 
@@ -40,9 +43,9 @@
 .endif
 
 .define thrustpid "$tpid"
-.define TPID_KP 0.5
+.define TPID_KP 0.092
 .define TPID_KI 0.0
-.define TPID_KD 0.0
+.define TPID_KD 0.001
 
 ; Velocity to terminate the landing at
 .define LANDING_DROP_V 1.5
@@ -56,7 +59,7 @@
 .define EXTRA_BURN_TIME 0.3
 
 ; Amount of time to allow the craft to orient retrograde
-.define ORIENT_TIME 2.0
+.define ORIENT_TIME 10.0
 
 .define FBW_THROTTLE "throttle"
 .define FBW_STEERING "steering"

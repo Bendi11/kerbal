@@ -4,6 +4,8 @@
 .include "src/common.s"
 .include "src/mnvr/common.s"
 
+; switch to 0. runpath("/boot/hoverslam.ksm").
+
 .func
 gs_wait_for_slam:
 CLS

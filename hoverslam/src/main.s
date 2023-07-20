@@ -1,4 +1,5 @@
 .global _start
+.global engage
 
 .define MAIN_S
 .include "./src/common.s"
@@ -12,6 +13,7 @@ init:
     push TPID_KP
     push TPID_KI
     push TPID_KD
+    neg
     call #, "pidloop()"
 
     dup
@@ -53,9 +55,9 @@ engage:
     stog "$sas"
     FBW(FBW_STEERING, true)
 
-; Steer retrograde
-prl lock_steer_retro
-addt false, 10
+    ; Steer retrograde
+    prl lock_steer_retro
+    addt false, 1000
 
 ; Wait to execute burn while steering retrograde
 .wait_to_burn:
@@ -66,8 +68,21 @@ addt false, 10
     cle
     bfa .wait_to_burn
 
+; Execute the maneuver
+    prl lock_steer_retro
+    rmvt
+
     push @
     call gs_execute_slam, #
+    pop
+    
+    push "kill"
+    sto "$steering"
+
+    push 0
+    sto "$throttle"
+    FBW(FBW_STEERING, false)
+    FBW(FBW_THROTTLE, false)
     
     push 0
     ret 1
@@ -77,10 +92,10 @@ lock_steer_retro:
     push "$ship"
     gmb "velocity"
     gmb "surface"
-    gmb "norm"
-    neg
+    gmb "normalized"
+    neg 
 
-    stog "$steering"
+    sto "$steering"
     
     push 0
     ret 0

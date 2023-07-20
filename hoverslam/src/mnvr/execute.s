@@ -9,24 +9,49 @@
 gs_execute_slam:
    nop
    .while_high:
+    CLS
     push thrustpid
     gmet "update"
 
     push @
     push "$time"
     gmb "seconds"
-
-    push "$ship"
-    gmb "verticalspeed"
     
+    push @
 
     push "$ship"
-    gmb "groundspeed"
-    sub
+    gmb "velocity"
+    gmb "surface"
+
+    push "$ship"
+    gmb "facing"
+    gmb "forevector"
+
+    call #, "vdot"
+     
+    dup
+    push "V IN DIR: "
+    swap
+    add
+    SPRINT
 
     call #, "<indirect>"
+
+    dup
+    push "THROT: "
+    swap
+    add
+    SPRINT
     
     sto "$throttle"
+
+    push "$ship"
+    gmb "velocity"
+    gmb "surface"
+    gmb "normalized"
+    neg 
+
+    sto "$steering"
     
     push 0
     wait
