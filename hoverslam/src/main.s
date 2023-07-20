@@ -34,3 +34,53 @@ _start:
     pop
 
     eop
+
+.define ORIENT_RETRO "$orrtro"
+
+.func
+engage:
+    bscp 2, 0
+
+.wait_to_orient_retro:
+    push @
+    call gs_wait_for_slam, #
+
+    push ORIENT_TIME
+    cle
+    bfa .wait_to_orient_retro
+    
+    push false
+    stog "$sas"
+    FBW(FBW_STEERING, true)
+
+; Steer retrograde
+prl lock_steer_retro
+addt false, 10
+
+; Wait to execute burn while steering retrograde
+.wait_to_burn:
+    push @
+    call gs_wait_for_slam, #
+
+    push EXTRA_BURN_TIME
+    cle
+    bfa .wait_to_burn
+
+    push @
+    call gs_execute_slam, #
+    
+    push 0
+    ret 1
+
+.func
+lock_steer_retro:
+    push "$ship"
+    gmb "velocity"
+    gmb "surface"
+    gmb "norm"
+    neg
+
+    stog "$steering"
+    
+    push 0
+    ret 0

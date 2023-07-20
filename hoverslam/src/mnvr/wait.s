@@ -1,10 +1,8 @@
 .global gs_wait_for_slam
-.global gs_execute_slam
 
 .define MNVR_S
-.include "./src/common.s"
-
-.section .text
+.include "src/common.s"
+.include "src/mnvr/common.s"
 
 .func
 gs_wait_for_slam:
@@ -104,92 +102,3 @@ CLS
     
     ret 1
 
-.func
-gs_execute_slam:
-   nop
-   .while_high:
-    push thrustpid
-    gmet "update"
-
-    push @
-    push "$time"
-    gmb "seconds"
-
-    push "$ship"
-    gmb "verticalspeed"
-    
-
-    push "$ship"
-    gmb "groundspeed"
-    sub
-
-    call #, "<indirect>"
-    
-    sto "$throttle"
-    
-    push 0
-    wait
-
-    push "$alt"
-    gmb "radar"
-    dup
-
-    push HIGH_ALT_FLOOR
-    cle
-    bfa .keep_going_fast
-    push thrustpid
-    push LANDING_DROP_V
-    neg
-    smb "setpoint"
-
-.keep_going_fast:
-
-    push 5
-    cle
-    bfa .while_high
-
-    push 0
-    ret 0
-
-; params: (top) velocity, acceleration, distance
-.func
-time_to_impact:
-nop
-    bscp 3, 0
-    dup
-    stol "$r0" ; v -> r0
-
-    ; sqrt(v0^2 + 2a(dx))
-    push 2
-    pow
-
-    ; v^2, a, dx
-
-    stol "$r1" ; v^2 -> r1
-    
-    ; a, dx
-    dup
-    stol "$r2" ; a -> r2
-    push 2
-    mul
-    
-    ; 2a, dx
-    mul
-
-    
-    push "$r1"
-    add
-
-    ; v^2 + 2a(dx)
-    
-    push @
-    swap
-    call #, "sqrt()"
-    
-    push "$r0"
-    add
-    
-    push "$r2"
-    div
-    
-    ret 1

@@ -1,8 +1,21 @@
+; Description of hoverslam algorithm:
+; Wait until tti - ttrv <= 0 + ORIENT_TIME
+; Begin orientation towards retrograde
+; Wait until tti - ttrv <= 0 + EXTRA_BURN_TIME
+; Begin Stage 1 suicide burn
+;  - Reduce vertical velocity to HIGH_ALT_DROP_V
+;  - Reduce horizontal velocity to 0
+; Orient towards gravity well
+; Maintain HIGH_ALT_DROP_V until AGL altitude is <= HIGH_ALT_FLOOR
+; Begin Stage 2 slam
+; - Reduce vertical velocity to LANDING_DROP_V
+; - Cut engines when lowest part altitude <= CUT_ENGINE_ALT
+
 .ifndef MNVR_S
 
 ; Wait until the correct time to execute the hover slam burn
 ; params - 
-; return - time in seconds until burn
+; return - time in seconds until S1 burn
 .extern .func gs_wait_for_slam
 
 ; Execute the hover slam burn
@@ -41,6 +54,9 @@
 ; The amount of seconds earlier to burn than the minimum required time to reduce velocity to 0,
 ; used to compensate for PID slop and as a safety stopgap
 .define EXTRA_BURN_TIME 0.3
+
+; Amount of time to allow the craft to orient retrograde
+.define ORIENT_TIME 2.0
 
 .define FBW_THROTTLE "throttle"
 .define FBW_STEERING "steering"
